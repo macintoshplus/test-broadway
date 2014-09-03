@@ -5,3 +5,15 @@ services:
 #    jb_test.example:
 #        class: %jb_test.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+
+    jb_test.repository:
+        class: Broadway\EventSourcing\EventSourcingRepository
+        arguments: [@broadway.event_store, @broadway.event_handling.event_bus, Jb\TestBundle\Domain\Model\Aggregate1]
+
+    jb_test.command_handling:
+        class: Jb\TestBundle\Domain\CommandHandling\MyCommandHandler
+        arguments: [@jb_test.repository]
+        tags:
+            - { name: command_handler }
+
