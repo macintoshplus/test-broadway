@@ -1,0 +1,4 @@
+jb_test:
+    resource: "@JbTestBundle/Resources/config/routing.yml"
+    prefix:   /
+

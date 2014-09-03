@@ -1,0 +1,3 @@
+jb_test_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: JbTestBundle:Default:index }
