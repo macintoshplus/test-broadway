@@ -1,9 +1,9 @@
 test-broadway
 =============
 
-Atempt use Broadway in symfony2 project.
+Attempt use Broadway in symfony2 project.
 
 
 After success using broadway with elasticsearch. Attempt to use a readmodel in MySQL DB.
 
-If you want help me, fork and pull request or if you have aleready a fonctionaly example useing MySQL Db for readmodel over Bradway, contact me.
+If you want help me, fork and pull request or if you have already a fonctional example using MySQL Db for readmodel over Broadway, contact me.
