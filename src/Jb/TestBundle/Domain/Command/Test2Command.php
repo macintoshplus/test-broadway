@@ -9,22 +9,17 @@ namespace Jb\TestBundle\Domain\Command;
 * Second command use for update a existing aggregate.
 * 
 */
-class Test2Command
+class Test2Command extends Test1Command
 {
-	private $texte;
-	private $id;
+	private $version;
 
-	public function __construct($id, $texte){
-		$this->texte=$texte;
-		$this->id=$id;
+	public function __construct($id, $texte, $version){
+		parent::__construct($id, $texte);
+		$this->version = $version;
 	}
 
-	public function getTexte(){
-		return $this->texte;
-	}
-
-	public function getId(){
-		return $this->id;
+	public function getVersion(){
+		return $this->version;
 	}
 
 }
