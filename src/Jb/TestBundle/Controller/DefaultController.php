@@ -9,22 +9,57 @@ namespace Jb\TestBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Jb\TestBundle\Domain\Command\Test1Command;
 use Jb\TestBundle\Domain\Command\Test2Command;
+use Jb\TestBundle\Entity\Message;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
+
+    /**
+     * List
+     * @param string $name
+     * @return Response
+     */
+    public function indexAction()
+    {
+        //Générate new id
+        $list = $this->getDoctrine()->getManager('readmodel')->getRepository('JbTestBundle:Message')->findAll();
+        return $this->render('JbTestBundle:Default:index.html.twig', array('list' => $list));
+    }
+
 	/**
 	 * Make new aggregate and save it
 	 * @param string $name
 	 * @return Response
 	 */
-    public function indexAction($name)
+    public function makeAction(Request $request)
     {
-    	//Générate new id
-    	$id = $this->get('broadway.uuid.generator')->generate();
+        $form = $this->createFormBuilder(new Message())
+            ->add('texte', 'text',array(
+                'required'=>true
+            ))
+            ->add('save', 'submit')
+            ->getForm();
 
-    	$this->get('broadway.command_handling.command_bus')->dispatch(new Test1Command($id, $name));
+        $form->handleRequest($request);
+        
+        if($form->isValid()){
+            
+            $id = $this->get('broadway.uuid.generator')->generate();
+            $data = $form->getData();
+            try{
+                $this->get('broadway.command_handling.command_bus')->dispatch(new Test1Command($id, $data->getTexte()));
 
-        return $this->render('JbTestBundle:Default:index.html.twig', array('name' => $name));
+                $this->get('session')->getFlashBag()->add('notice', 'Your message were saved!');
+                return $this->redirect($this->generateUrl('jb_test_homepage'));
+
+            }catch(\Exception $e){
+                $this->get('session')->getFlashBag()->add('notice', 'Error : '.$e->getMessage());
+            }
+        }
+        
+        return $this->render('JbTestBundle:Default:new.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -33,11 +68,38 @@ class DefaultController extends Controller
      * @param string $name
 	 * @return Response
      */
-    public function changeAction($id, $name)
+    public function changeAction(Request $request, $id)
     {
 
-    	$this->get('broadway.command_handling.command_bus')->dispatch(new Test2Command($id,$name));
+        $obj = $this->getDoctrine()->getManager('readmodel')->getRepository('JbTestBundle:Message')->findOneBy(array('id'=>$id));
+        if(!$obj){
+            throw new NotFoundHttpException('No object found for this id : '.$id);
+        }
+        $form = $this->createFormBuilder($obj)
+            ->add('texte', 'text',array(
+                'required'=>true
+            ))
+            ->add('id','hidden')
+            ->add('version','hidden')
+            ->add('save', 'submit')
+            ->getForm();
 
-        return $this->render('JbTestBundle:Default:index.html.twig', array('name' => $name));
+        $form->handleRequest($request);
+        
+        if($form->isValid()){
+            
+            try{
+
+                $this->get('broadway.command_handling.command_bus')->dispatch(new Test2Command($id,$obj->getTexte(), $obj->getVersion()));
+
+                $this->get('session')->getFlashBag()->add('notice', 'Your message were saved!');
+                return $this->redirect($this->generateUrl('jb_test_homepage'));
+
+            }catch(\Exception $e){
+                $this->get('session')->getFlashBag()->add('notice', 'Error : '.$e->getMessage());
+            }
+        }
+        
+        return $this->render('JbTestBundle:Default:new.html.twig', array('form' => $form->createView()));
     }
 }
