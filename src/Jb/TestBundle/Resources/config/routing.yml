@@ -5,3 +5,15 @@ jb_test_homepage:
 jb_test_update:
     path:     /update/{id}/{name}
     defaults: { _controller: JbTestBundle:Default:change }
+
+jb_test_login:
+    path: /login
+    defaults: { _controller: JbTestBundle:Secured:login }
+
+jb_test_logout:
+    path: /logout
+
+jb_test_securitycheck:
+    path: /check
+    requirements: { _method: POST }
+
