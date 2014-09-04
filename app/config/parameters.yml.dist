@@ -20,3 +20,7 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+#only for fix error
+    storage_suffix: test
+    elasticsearch: none
