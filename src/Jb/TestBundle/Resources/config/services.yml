@@ -17,3 +17,9 @@ services:
         tags:
             - { name: command_handler }
 
+    jb_test.event_listener:
+        class: Jb\TestBundle\Listener\MyEventListener
+        arguments: [@doctrine.orm.readmodel_entity_manager]
+        tags:
+            - { name: 'broadway.domain.event_listener' }
+
