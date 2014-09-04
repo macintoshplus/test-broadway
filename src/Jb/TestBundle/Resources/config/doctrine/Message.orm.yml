@@ -1,0 +1,17 @@
+Jb\TestBundle\Entity\Message:
+    type: entity
+    table: null
+    repositoryClass: Jb\TestBundle\Entity\MessageRepository
+    id:
+        id:
+            type: string
+            length: 255
+            id: true
+    fields:
+        texte:
+            type: string
+            length: 255
+        version:
+            type: integer
+
+    lifecycleCallbacks: {  }
