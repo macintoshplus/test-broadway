@@ -11,6 +11,7 @@ use Jb\TestBundle\Domain\Command\Test1Command;
 use Jb\TestBundle\Domain\Event\Test1Event;
 use Jb\TestBundle\Domain\Command\Test2Command;
 use Jb\TestBundle\Domain\Event\Test2Event;
+use Jb\TestBundle\Domain\Exceptions;
 
 class Aggregate1 extends EventSourcedAggregateRoot
 {
