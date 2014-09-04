@@ -21,6 +21,11 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "broadway/broadway": "dev-master"
     },
+    "require-dev": {
+        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/doctrine-migrations-bundle": "2.1.*@dev"
+    },
+
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
