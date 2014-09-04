@@ -1,3 +1,7 @@
 jb_test_homepage:
-    path:     /hello/{name}
+    path:     /make/{name}
     defaults: { _controller: JbTestBundle:Default:index }
+
+jb_test_update:
+    path:     /update/{id}/{name}
+    defaults: { _controller: JbTestBundle:Default:change }
