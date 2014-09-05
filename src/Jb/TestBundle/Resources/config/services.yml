@@ -9,7 +9,7 @@ services:
 
     jb_test.repository:
         class: Broadway\EventSourcing\EventSourcingRepository
-        arguments: [@broadway.event_store, @broadway.event_handling.event_bus, Jb\TestBundle\Domain\Model\Aggregate1]
+        arguments: [@broadway.event_store, @broadway.event_handling.event_bus, Jb\TestBundle\Domain\Model\Aggregate1, [@broadway.metadata_enriching_event_stream_decorator]]
 
     jb_test.command_handling:
         class: Jb\TestBundle\Domain\CommandHandling\MyCommandHandler
@@ -23,3 +23,8 @@ services:
         tags:
             - { name: 'broadway.domain.event_listener' }
 
+    jb_test.meta_data_enricher:
+        class: Jb\TestBundle\Listener\MyEnricherListener
+        arguments: [@security.context]
+        tags:
+            - { name: 'broadway.metadata_enricher' }

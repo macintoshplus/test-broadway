@@ -1,1 +1,23 @@
-Hello {{ name }}!
+{% extends 'JbTestBundle::layout.html.twig' %}
+
+{% block content %}
+
+<table style="width:100%;">
+<thead>
+<tr><th>ID</th><th>Message</th><th>Tools</th></tr>
+</thead>
+<tbody>
+{% for item in list %}
+<tr style="">
+<td>{{item.id}}</td>
+<td>{{item.texte}}</td>
+<td><a href="{{path('jb_test_update',{'id':item.id})}}">Update Message</a></td>
+<tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p><a href="{{path('jb_test_make')}}">Add new message</a></p>
+
+
+{% endblock %}
