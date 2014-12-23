@@ -6,10 +6,13 @@ services:
 #        class: %jb_test.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
+    jb_test.aggregate_factory:
+        class: Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory
+        arguments: ~
 
     jb_test.repository:
         class: Broadway\EventSourcing\EventSourcingRepository
-        arguments: [@broadway.event_store, @broadway.event_handling.event_bus, Jb\TestBundle\Domain\Model\Aggregate1, [@broadway.metadata_enriching_event_stream_decorator]]
+        arguments: [@broadway.event_store, @broadway.event_handling.event_bus, Jb\TestBundle\Domain\Model\Aggregate1, @jb_test.aggregate_factory, [@broadway.metadata_enriching_event_stream_decorator]]
 
     jb_test.command_handling:
         class: Jb\TestBundle\Domain\CommandHandling\MyCommandHandler

@@ -13,31 +13,56 @@ use Jb\TestBundle\Domain\Command\Test2Command;
 use Jb\TestBundle\Domain\Event\Test2Event;
 use Jb\TestBundle\Domain\Exceptions;
 
+/**
+ * My exemple
+ */
 class Aggregate1 extends EventSourcedAggregateRoot
 {
-	private $texte;
+    /**
+     * @rav string $texte
+     */
+    private $texte;
+    /**
+     * @var string $id
+     */
+    private $id;
 
-	private $id;
-
-	public function __construct(){
-		
-	}
-
-	public static function make($id, $texte){
-		$ag = new Aggregate1();
-
-		$ag->apply(new Test1Event($id, $texte));
-
-		return $ag;
-	}
-
-	public function getId(){
-		return $this->id;
-	}
-
-	public function test2(Test2Command $command)
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
+    }
 
+    /**
+     * command for make aggregate
+     * @param string $id
+     * @param string $texte
+     * @return Aggregate1
+     */
+    public static function make($id, $texte)
+    {
+        $ag = new Aggregate1();
+
+        $ag->apply(new Test1Event($id, $texte));
+
+        return $ag;
+    }
+
+    /**
+     * return ID
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param Test2Command
+     */
+    public function test2(Test2Command $command)
+    {
         $this->apply(new Test2Event($this->id, $command->getTexte()));
     }
 
@@ -51,5 +76,12 @@ class Aggregate1 extends EventSourcedAggregateRoot
         $this->texte = $event->texte;
     }
 
+    /**
+     * return ID
+     * @return string
+     */
+    public function getAggregateRootId()
+    {
+        return $this->getId();
+    }
 }
-
