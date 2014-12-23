@@ -1,7 +1,7 @@
 test-broadway
 =============
 
-Attempt use Broadway 0.3.0 in symfony2 (2.3.x) project.
+[POC] Broadway 0.3.0 in symfony2 (2.3.x) project.
 
 
 If you want help me, fork and pull request or if you have already a fonctional example using MySQL Db for readmodel over Broadway, contact me.
