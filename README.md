@@ -1,14 +1,13 @@
 test-broadway
 =============
 
-Attempt use Broadway in symfony2 project.
+Attempt use Broadway 0.3.0 in symfony2 (2.3.x) project.
 
 
 If you want help me, fork and pull request or if you have already a fonctional example using MySQL Db for readmodel over Broadway, contact me.
 
 > Note : Use the tag name `command_handler` in service configuration for all your commande handler. See `src/Jb/TestBundle/Ressources/config/service.yml` in this repository.
 
-> *Caution when updating the Broadway library. Several changes requires refactoring of part of the code.*
 
 Install
 =======
