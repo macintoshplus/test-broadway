@@ -1,8 +1,9 @@
 test-broadway
 =============
 
-[POC] Broadway 0.3.0 in symfony2 (2.3.x) project.
+[POC] [Broadway](https://github.com/qandidate-labs/broadway/tree/master) 0.8.0 in symfony2 (2.7.x) project.
 
+I wrote a [blog post here](http://nahan.fr/symfony-broadway-and-the-replay-event/)
 
 If you want help me, fork and pull request or if you have already a fonctional example using MySQL Db for readmodel over Broadway, contact me.
 
