@@ -49,7 +49,7 @@ Use
 ### Run server
 
 Open your terminal and go to the project folder. Launch this command for run server `php app/console server:start`
-Enjoy ! Open you browser at : [http://127.0.0.1:8000](http://127.0.0.1:8000)
+Enjoy ! Open your browser at : [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ### Login
 
