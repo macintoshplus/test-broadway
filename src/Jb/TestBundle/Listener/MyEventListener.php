@@ -7,46 +7,45 @@
 namespace Jb\TestBundle\Listener;
 
 use Broadway\Processor\Processor;
-use Broadway\Domain\DomainMessageInterface;
+use Broadway\Domain\DomainMessage;
 use Jb\TestBundle\Domain\Event\Test1Event;
 use Jb\TestBundle\Domain\Event\Test2Event;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Jb\TestBundle\Entity\Message;
 
-class MyEventListener extends Processor {
+class MyEventListener extends Processor
+{
+    private $em;
 
-	private $em;
+    public function __construct(ObjectManager $em)
+    {
+        $this->em = $em;
+    }
 
-	public function __construct(EntityManager $em){
-		$this->em = $em;
-	}
+    protected function handleTest2Event(Test2Event $evt, DomainMessage $message)
+    {
 
-    protected function handleTest2Event(Test2Event $evt, DomainMessageInterface $message){
-		$obj = $this->em->getRepository('JbTestBundle:Message')->findOneBy(array('id'=>$evt->id));
-		if(!$obj){
-			throw new \Exception("View for this aggregate id ".$evt->id." not exist !");
-			
-		}
-		$obj->setTexte($evt->texte);
-		$obj->setVersion($message->getPlayhead());
-
-        
+        dump($message);
+        $obj = $this->em->getRepository('JbTestBundle:Message')->findOneBy(array('id'=>$message->getId()));
+        if (!$obj) {
+            throw new \Exception(sprintf('View for this aggregate id "%s" not exist !', $message->getId()));
+        }
+        $obj->setTexte($evt->getTexte());
+        $obj->setVersion($message->getPlayhead());
 
         $this->em->persist($obj);
         $this->em->flush();
     }
 
-    protected function handleTest1Event(Test1Event $evt, DomainMessageInterface $message){
-    	$obj = new Message();
-    	$obj->setId($evt->id);
-    	$obj->setTexte($evt->texte);
-		$obj->setVersion($message->getPlayhead());
-
-        
+    protected function handleTest1Event(Test1Event $evt, DomainMessage $message)
+    {
+        dump($message);
+        $obj = new Message();
+        $obj->setId($message->getId());
+        $obj->setTexte($evt->getTexte());
+        $obj->setVersion($message->getPlayhead());
 
         $this->em->persist($obj);
         $this->em->flush();
     }
 }
-
-

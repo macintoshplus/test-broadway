@@ -7,11 +7,9 @@
 namespace Jb\TestBundle\Domain\Model;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use Jb\TestBundle\Domain\Command\Test1Command;
 use Jb\TestBundle\Domain\Event\Test1Event;
 use Jb\TestBundle\Domain\Command\Test2Command;
 use Jb\TestBundle\Domain\Event\Test2Event;
-use Jb\TestBundle\Domain\Exceptions;
 
 /**
  * My exemple
@@ -36,8 +34,8 @@ class Aggregate1 extends EventSourcedAggregateRoot
 
     /**
      * command for make aggregate
-     * @param string $id
-     * @param string $texte
+     * @param  string     $id
+     * @param  string     $texte
      * @return Aggregate1
      */
     public static function make($id, $texte)
@@ -63,17 +61,17 @@ class Aggregate1 extends EventSourcedAggregateRoot
      */
     public function test2(Test2Command $command)
     {
-        $this->apply(new Test2Event($this->id, $command->getTexte()));
+        $this->apply(new Test2Event($command->getTexte()));
     }
 
     protected function applyTest1Event(Test1Event $event)
     {
-        $this->texte = $event->texte;
-        $this->id = $event->id;
+        $this->texte = $event->getTexte();
+        $this->id = $event->getId();
     }
     protected function applyTest2Event(Test2Event $event)
     {
-        $this->texte = $event->texte;
+        $this->texte = $event->getTexte();
     }
 
     /**

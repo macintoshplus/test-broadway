@@ -11,7 +11,7 @@
 <tr style="">
 <td>{{item.id}}</td>
 <td>{{item.texte}}</td>
-<td><a href="{{path('jb_test_update',{'id':item.id})}}">Update Message</a></td>
+<td><a href="{{path('jb_test_update',{'id':item.id})}}">Update Message</a> | <a href="{{path('jb_test_replay',{'id':item.id})}}">Replay all events</a></td>
 <tr>
 {% endfor %}
 </tbody>

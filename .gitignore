@@ -7,4 +7,4 @@
 !app/logs/.gitkeep
 /build/
 /vendor/
-/bin/
+/bin/*

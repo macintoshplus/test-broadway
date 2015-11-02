@@ -8,23 +8,25 @@ namespace Jb\TestBundle\Listener;
 
 use Broadway\Domain\Metadata;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnricherInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
-class MyEnricherListener implements MetadataEnricherInterface {
-	private $securityContext;
-	private $event;
+class MyEnricherListener implements MetadataEnricherInterface
+{
+    private $tokenStorage;
+    private $event;
 
-	public function __construct(SecurityContext $sc){
+    public function __construct(TokenStorage $sc)
+    {
+        $this->tokenStorage = $sc;
+    }
 
-		$this->securityContext = $sc;
-	}
-
-	public function enrich(Metadata $metadata){
-		
+    public function enrich(Metadata $metadata)
+    {
         $data = array(
-            'user' => $this->securityContext->getToken()->getUser()->getUserName()
+            'user' => $this->tokenStorage->getToken()->getUser()->getUserName()
         );
         $newMetadata = new Metadata($data);
+
         return $metadata->merge($newMetadata);
     }
 }

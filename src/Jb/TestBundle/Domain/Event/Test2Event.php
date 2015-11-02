@@ -4,29 +4,39 @@
  * @license MIT
  */
 
-
 namespace Jb\TestBundle\Domain\Event;
 
 use Broadway\Serializer\SerializableInterface;
 
-class Test2Event implements SerializableInterface {
-	public $texte;
-	public $id;
+class Test2Event implements SerializableInterface
+{
+    public $texte;
 
-	public function __construct($id, $texte){
-		$this->texte = $texte;
-		$this->id=$id;
-	}
+    public function __construct($texte)
+    {
+        $this->texte = $texte;
+    }
 
-	public static function deserialize(array $data){
-		return new Test2Event($data['id'],$data['texte']);
-	}
+    public static function deserialize(array $data)
+    {
+        return new self($data['texte']);
+    }
 
     /**
      * @return array
      */
-    public function serialize(){
-    	return array("texte"=>$this->texte, "id"=>$this->id);
+    public function serialize()
+    {
+        return array("texte"=>$this->texte);
+    }
+
+    /**
+     * Gets the value of texte.
+     *
+     * @return mixed
+     */
+    public function getTexte()
+    {
+        return $this->texte;
     }
 }
-

@@ -10,6 +10,10 @@ jb_test_update:
     path:     /update/{id}/
     defaults: { _controller: JbTestBundle:Default:change }
 
+jb_test_replay:
+    path:     /replay/{id}
+    defaults: { _controller: JbTestBundle:Default:replay }
+
 jb_test_login:
     path: /login
     defaults: { _controller: JbTestBundle:Secured:login }

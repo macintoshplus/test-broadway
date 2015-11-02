@@ -2,10 +2,6 @@ parameters:
 #    jb_test.example.class: Jb\TestBundle\Example
 
 services:
-#    jb_test.example:
-#        class: %jb_test.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
-
     jb_test.aggregate_factory:
         class: Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory
         arguments: ~
@@ -25,9 +21,13 @@ services:
         arguments: [@doctrine.orm.readmodel_entity_manager]
         tags:
             - { name: 'broadway.domain.event_listener' }
+            - { name: 'jb_test.domain.event_listener' }
 
     jb_test.meta_data_enricher:
         class: Jb\TestBundle\Listener\MyEnricherListener
-        arguments: [@security.context]
+        arguments: [@security.token_storage]
         tags:
             - { name: 'broadway.metadata_enricher' }
+
+    jb_test.event_handling.event_bus:
+        class: Broadway\EventHandling\SimpleEventBus

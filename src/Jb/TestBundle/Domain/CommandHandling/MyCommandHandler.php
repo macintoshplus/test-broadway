@@ -19,19 +19,20 @@ use Broadway\CommandHandling\CommandHandler;
 
 class MyCommandHandler extends CommandHandler
 {
-    
+
     private $repository;
 
-    public function __construct(EventSourcingRepository $repository){
-    	$this->repository = $repository;
+    public function __construct(EventSourcingRepository $repository)
+    {
+        $this->repository = $repository;
 
     }
     public function handleTest1Command(Command\Test1Command $command)
     {
         //echo "CommandHandling : " . $command->getTexte() . "\n";
         $obj = Aggregate1::make($command->getId(), $command->getTexte());
-        
-        $this->repository->add($obj);
+
+        $this->repository->save($obj);
     }
 
     public function handleTest2Command(Command\Test2Command $command)
@@ -39,6 +40,6 @@ class MyCommandHandler extends CommandHandler
         //echo "CommandHandling : " . $command->getTexte() . " for aggregate id ".$command->getId()."\n";
         $obj = $this->repository->load($command->getId());
         $obj->test2($command);
-        $this->repository->add($obj);
+        $this->repository->save($obj);
     }
 }

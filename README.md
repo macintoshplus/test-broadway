@@ -57,5 +57,9 @@ For update, use this url `<URL>/update/<UUID>/<texte>`
 > For get the uuid, read in event_store table with MySQL Client.
 
 
+For replay events, use this url `<URL>/replay/<UUID>`
+> For get the uuid, read in event_store table with MySQL Client.
+
+
 
 
