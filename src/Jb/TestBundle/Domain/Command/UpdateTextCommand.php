@@ -24,5 +24,4 @@ class UpdateTextCommand extends CreateCommand
     {
         return $this->version;
     }
-
 }
