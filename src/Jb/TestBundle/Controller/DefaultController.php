@@ -132,7 +132,7 @@ class DefaultController extends Controller
             $this->get('session')->getFlashBag()->add('notice', 'Error : '.$e->getMessage());
         }
 
-        return $this->render('JbTestBundle:Default:empty.html.twig', array());
+        //return $this->render('JbTestBundle:Default:empty.html.twig', array());
         return $this->redirect($this->generateUrl('jb_test_homepage'));
     }
 }
