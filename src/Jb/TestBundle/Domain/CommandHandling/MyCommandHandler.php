@@ -19,26 +19,39 @@ use Broadway\CommandHandling\CommandHandler;
 
 class MyCommandHandler extends CommandHandler
 {
-    
+
     private $repository;
 
-    public function __construct(EventSourcingRepository $repository){
-    	$this->repository = $repository;
+    public function __construct(EventSourcingRepository $repository)
+    {
+        $this->repository = $repository;
 
     }
-    public function handleTest1Command(Command\Test1Command $command)
+    public function handleCreateCommand(Command\CreateCommand $command)
     {
-        //echo "CommandHandling : " . $command->getTexte() . "\n";
-        $obj = Aggregate1::make($command->getId(), $command->getTexte());
-        
-        $this->repository->add($obj);
+        $obj = Aggregate1::make($command->getId(), $command->getText());
+
+        $this->repository->save($obj);
     }
 
-    public function handleTest2Command(Command\Test2Command $command)
+    public function handleUpdateTextCommand(Command\UpdateTextCommand $command)
     {
-        //echo "CommandHandling : " . $command->getTexte() . " for aggregate id ".$command->getId()."\n";
         $obj = $this->repository->load($command->getId());
-        $obj->test2($command);
-        $this->repository->add($obj);
+        $obj->updateText($command->getText());
+        $this->repository->save($obj);
+    }
+
+    public function handleLockCommand(Command\LockCommand $command)
+    {
+        $obj = $this->repository->load($command->getId());
+        $obj->lock();
+        $this->repository->save($obj);
+    }
+
+    public function handleUnlockCommand(Command\UnlockCommand $command)
+    {
+        $obj = $this->repository->load($command->getId());
+        $obj->unlock();
+        $this->repository->save($obj);
     }
 }

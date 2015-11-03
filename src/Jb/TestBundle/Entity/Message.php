@@ -91,4 +91,33 @@ class Message
     {
         return $this->version;
     }
+    /**
+     * @var boolean
+     */
+    private $locked;
+
+
+    /**
+     * Set locked
+     *
+     * @param boolean $locked
+     *
+     * @return Message
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = $locked;
+
+        return $this;
+    }
+
+    /**
+     * Get locked
+     *
+     * @return boolean
+     */
+    public function getLocked()
+    {
+        return $this->locked;
+    }
 }

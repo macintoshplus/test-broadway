@@ -4,14 +4,15 @@
 
 <table style="width:100%;">
 <thead>
-<tr><th>ID</th><th>Message</th><th>Tools</th></tr>
+<tr><th>ID</th><th>Message</th><th>Locked ?</th><th>Tools</th></tr>
 </thead>
 <tbody>
 {% for item in list %}
 <tr style="">
 <td>{{item.id}}</td>
 <td>{{item.texte}}</td>
-<td><a href="{{path('jb_test_update',{'id':item.id})}}">Update Message</a></td>
+<td>{{item.locked? 'True':'False'}}</td>
+<td><a href="{{path('jb_test_update',{'id':item.id})}}">Update Message</a> | <a href="{{path('jb_test_lock',{'id':item.id})}}">Lock Message</a> | <a href="{{path('jb_test_unlock',{'id':item.id})}}">Unlock Message</a></td>
 <tr>
 {% endfor %}
 </tbody>

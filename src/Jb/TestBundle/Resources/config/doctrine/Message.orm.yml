@@ -11,6 +11,9 @@ Jb\TestBundle\Entity\Message:
         texte:
             type: string
             length: 255
+        locked:
+            type: boolean
+            nullable: false
         version:
             type: integer
 

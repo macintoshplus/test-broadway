@@ -7,11 +7,10 @@
 namespace Jb\TestBundle\Domain\Model;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use Jb\TestBundle\Domain\Command\Test1Command;
-use Jb\TestBundle\Domain\Event\Test1Event;
-use Jb\TestBundle\Domain\Command\Test2Command;
-use Jb\TestBundle\Domain\Event\Test2Event;
-use Jb\TestBundle\Domain\Exceptions;
+use Jb\TestBundle\Domain\Event\CreatedEvent;
+use Jb\TestBundle\Domain\Event\TextUpdatedEvent;
+use Jb\TestBundle\Domain\Event\LockedEvent;
+use Jb\TestBundle\Domain\Event\UnlockedEvent;
 
 /**
  * My exemple
@@ -19,38 +18,46 @@ use Jb\TestBundle\Domain\Exceptions;
 class Aggregate1 extends EventSourcedAggregateRoot
 {
     /**
-     * @rav string $texte
+     * @rav string $text
      */
-    private $texte;
+    private $text;
+
     /**
      * @var string $id
      */
     private $id;
 
     /**
+     * @var State\BaseState
+     */
+    private $state;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->state = new State\InitialState($this);
     }
 
     /**
      * command for make aggregate
-     * @param string $id
-     * @param string $texte
+     * @param  string     $id
+     * @param  string     $text
      * @return Aggregate1
      */
-    public static function make($id, $texte)
+    public static function make($id, $text)
     {
         $ag = new Aggregate1();
 
-        $ag->apply(new Test1Event($id, $texte));
+        $ag->apply(new CreatedEvent($id, $text));
 
         return $ag;
     }
 
     /**
-     * return ID
+     * return ID.
+     *
      * @return string
      */
     public function getId()
@@ -59,29 +66,107 @@ class Aggregate1 extends EventSourcedAggregateRoot
     }
 
     /**
-     * @param Test2Command
-     */
-    public function test2(Test2Command $command)
-    {
-        $this->apply(new Test2Event($this->id, $command->getTexte()));
-    }
-
-    protected function applyTest1Event(Test1Event $event)
-    {
-        $this->texte = $event->texte;
-        $this->id = $event->id;
-    }
-    protected function applyTest2Event(Test2Event $event)
-    {
-        $this->texte = $event->texte;
-    }
-
-    /**
-     * return ID
+     * return ID.
+     *
      * @return string
      */
     public function getAggregateRootId()
     {
         return $this->getId();
+    }
+
+    /**
+     * Gets the value of text.
+     *
+     * @return mixed
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Check if this aggregate is locked.
+     *
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return ($this->state instanceof \Jb\TestBundle\Domain\Model\State\LockedState);
+    }
+
+    /**
+     * @param string $text
+     */
+    public function updateText($text)
+    {
+        $this->state->updateText($text);
+        $this->applyAllEvents();
+    }
+
+    /**
+     * Lock this aggregate
+     */
+    public function lock()
+    {
+        $this->state->lock();
+        $this->applyAllEvents();
+    }
+
+    /**
+     * Unlock this aggregate
+     */
+    public function unlock()
+    {
+        $this->state->unlock();
+        $this->applyAllEvents();
+    }
+
+    /**
+     * Apply event to this aggregate for update
+     * @param CreatedEvent $event
+     */
+    protected function applyCreatedEvent(CreatedEvent $event)
+    {
+        $this->text = $event->getText();
+        $this->id = $event->getId();
+    }
+
+    /**
+     * Apply event to this aggregate for update
+     * @param TextUpdatedEvent $event
+     */
+    protected function applyTextUpdatedEvent(TextUpdatedEvent $event)
+    {
+        $this->text = $event->getText();
+    }
+
+    /**
+     * Apply event to this aggregate for update. Here is the efective state change.
+     * @param LockedEvent $event
+     */
+    protected function applyLockedEvent(LockedEvent $event)
+    {
+        $this->state = new State\LockedState($this);
+    }
+
+    /**
+     * Apply event to this aggregate for update. Here is the efective state change.
+     * @param UnlockedEvent $event
+     */
+    protected function applyUnlockedEvent(UnlockedEvent $event)
+    {
+        $this->state = new State\InitialState($this);
+    }
+
+    /**
+     * This function get all event created by state object and apply.
+     */
+    private function applyAllEvents()
+    {
+        $events = $this->state->getEvents();
+        foreach ($events as $event) {
+            $this->apply($event);
+        }
     }
 }

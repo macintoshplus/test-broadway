@@ -1,0 +1,3 @@
+#!/bin/sh
+
+php vendor/atoum/atoum/bin/atoum -d src/Jb/TestBundle/Tests/Units/ -bf app/autoload.php

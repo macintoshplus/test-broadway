@@ -10,6 +10,13 @@ jb_test_update:
     path:     /update/{id}/
     defaults: { _controller: JbTestBundle:Default:change }
 
+jb_test_lock:
+    path:     /lock/{id}
+    defaults: { _controller: JbTestBundle:Default:lock }
+jb_test_unlock:
+    path:     /unlock/{id}
+    defaults: { _controller: JbTestBundle:Default:unlock }
+
 jb_test_login:
     path: /login
     defaults: { _controller: JbTestBundle:Secured:login }
